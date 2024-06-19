@@ -1,0 +1,23 @@
+[
+    {
+        "user_id": "asasd54lfdjlasagvadf",
+        "username": "meme",
+        "email": "meme@gmail.com",
+        "password": "000",
+        "memory": [
+            {
+                "title": "first",
+                "description": "first memory",
+                "date": "Tue Jun 18 09:34:54 2024",
+                "image": "https://picsum.photos/200/300"
+
+            },
+            {
+                "title": "second",
+                "description": "second memory",
+                "date": "Tue Jun 18 10:34:54 2024",
+                "image": "https://picsum.photos/200/300"
+            }
+        ]
+    }
+]

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <form method="post" action="{{ url_for('add_memory') }}">
+        <label>Title:</label>
+        <input type="text" name="title" required><br>
+        <label>Description:</label>
+        <textarea name="description" required></textarea><br>
+        <label>Image URL:</label>
+        <input type="text" name="image"><br>
+        <input type="submit" value="Add Memory">
+    </form>
+    <h2>Your Memories</h2>
+    <ul>
+        {% for memory in memories %}
+            <li>
+                <h3>{{ memory.title }}</h3>
+                <p>{{ memory.description }}</p>
+                {% if memory.image %}
+                    <img src="{{ memory.image }}" alt="Memory Image"><br>
+                {% endif %}
+                <p>{{ memory.date }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
