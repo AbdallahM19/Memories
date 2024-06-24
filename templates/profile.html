@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <div class="profile-header">
+            <div class="profile-image">
+                {% if user.profile_image %}
+                    <img src="{{ user.profile_image }}" alt="Profile Image">
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h2>{{ user.username }}</h2>
+                <h4>Email: {{ user.email }}</h4>
+                <form action="{{ url_for('update_profile_image') }}" method="post" enctype="multipart/form-data">
+                    <label for="profile_image">Update Profile Image:</label>
+                    <input type="file" name="profile_image" id="profile_image">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

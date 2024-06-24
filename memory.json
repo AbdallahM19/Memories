@@ -3,21 +3,30 @@
         "user_id": "asasd54lfdjlasagvadf",
         "username": "meme",
         "email": "meme@gmail.com",
-        "password": "000",
+        "password": "scrypt:32768:8:1$mAPEvVYaYtx8v9NL$5cdd8e870e4dd02ba83c9987de9ecf952aa86aa834144454de20b03b8092d64c268294c065224a5007b80913b779266d56d4f66e1e611f55de57734aa9d784cb",
         "memory": [
             {
+                "memory_id": 1,
                 "title": "first",
                 "description": "first memory",
                 "date": "Tue Jun 18 09:34:54 2024",
-                "image": "https://picsum.photos/200/300"
-
+                "image_memory": "/static/images/images_memory/wallpaperflare.com_wallpaper (1).jpg"
             },
             {
+                "memory_id": 2,
                 "title": "second",
                 "description": "second memory",
                 "date": "Tue Jun 18 10:34:54 2024",
-                "image": "https://picsum.photos/200/300"
+                "image_memory": "/static/images/images_memory/wallpaperflare.com_wallpaper (3).jpg"
+            },
+            {
+                "memory_id": 3,
+                "title": "third",
+                "description": "third memory",
+                "date": "Sunday June 23:40:42.124747 PM 23-06-2024",
+                "image_memory": "/static/images/images_memory/d7awx8y-abf2894e-c4ae-401d-9f7a-36367c73427a.gif"
             }
-        ]
+        ],
+        "profile_image": "/static/images/profiles/dark%20king.jpg"
     }
 ]

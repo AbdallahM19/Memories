@@ -6,13 +6,13 @@
 </head>
 <body>
     <h1>Welcome, {{ username }}!</h1>
-    <form method="post" action="{{ url_for('add_memory') }}">
+    <form method="post" action="{{ url_for('add_memory') }}" enctype="multipart/form-data">
         <label>Title:</label>
         <input type="text" name="title" required><br>
         <label>Description:</label>
         <textarea name="description" required></textarea><br>
-        <label>Image URL:</label>
-        <input type="text" name="image"><br>
+        <label>Chosse Image:</label>
+        <input type="file" name="image_memory"><br>
         <input type="submit" value="Add Memory">
     </form>
     <h2>Your Memories</h2>
@@ -20,11 +20,11 @@
         {% for memory in memories %}
             <li>
                 <h3>{{ memory.title }}</h3>
+                <h4>{{ memory.date }}</h4>
                 <p>{{ memory.description }}</p>
-                {% if memory.image %}
-                    <img src="{{ memory.image }}" alt="Memory Image"><br>
+                {% if memory.image_memory %}
+                    <img src="{{ memory.image_memory }}" alt="Memory Image"><br>
                 {% endif %}
-                <p>{{ memory.date }}</p>
             </li>
         {% endfor %}
     </ul>
