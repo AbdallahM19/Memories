@@ -26,6 +26,22 @@ def load_data():
         return []
 
 
+def load_data_special_by_username(current_username):
+    try:
+        with open('memory.json', 'r') as f:
+            data = json.load(f)
+        for user in data:
+            if user['username'] == current_username:
+                break
+        return user
+    except FileNotFoundError:
+        print("No file named memory.json found.")
+        return []
+    except json.JSONDecodeError:
+        print("An error occurred while decoding memory.json.")
+        return []
+
+
 # def dict_in_list(title, memory, image=None):
 #     data = {
 #         "title": title,

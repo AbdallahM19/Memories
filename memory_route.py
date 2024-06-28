@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template, redirect, url_for, request
 from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from helping_functions import load_data, save_data
+from helping_functions import load_data, save_data, load_data_special_by_username
 from datetime import datetime
 from os import path, remove
 from uuid import uuid4
@@ -14,9 +14,10 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin):
-    def __init__(self, id, username, password):
+    def __init__(self, id, username, email, password):
         self.id = id
         self.username = username
+        self.email = email
         self.password = password
     
     @property
@@ -28,7 +29,7 @@ def load_users():
     data = load_data()
     users = {}
     for user_data in data:
-        user = User(user_data['user_id'], user_data['username'], user_data['password'])
+        user = User(user_data['user_id'], user_data['username'], user_data['email'], user_data['password'])
         users[user_data['username']] = user
     return users
 
@@ -109,12 +110,7 @@ def register():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    data = load_data()
-    user_data = None
-    for user in data:
-        if user['username'] == current_user.username:
-            user_data = user
-            break
+    user_data = load_data_special_by_username(current_user.username)
 
     if user_data:
         return render_template('home.html', username=user_data['username'], memories=user_data['memory'])
@@ -167,9 +163,11 @@ def edit_memory():
         if user['username'] == current_user.username:
             for memory in user['memory']:
                 if memory['memory_id'] == memory_id:
-                    memory['title'] = new_title
-                    memory['description'] = new_description
                     memory['date'] = datetime.now().strftime("%A %B %H:%M:%S.%f %p %d-%m-%Y")
+                    if new_title:
+                        memory['title'] = new_title
+                    if new_description:
+                        memory['description'] = new_description
                     if image_memory:
                         memory_image_path = path.join(app.root_path, "static/images/images_memory", image_memory.filename)
                         image_memory.save(memory_image_path)
@@ -210,11 +208,7 @@ def delete_memory():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    data = load_data()
-    for user_data in data:
-        if user_data['username'] == current_user.username:
-            user = user_data
-            break
+    user = load_data_special_by_username(current_user.username)
     return render_template('profile.html', user=user)
 
 @app.route('/update_profile_image', methods=['GET', 'POST'])
@@ -226,14 +220,10 @@ def update_profile_image():
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
     new_confirm_password = request.form.get('new_confirm_password')
-    profile_image = request.files["profile_image"]
+    profile_image = request.files.get('profile_image')
 
     try:
-        data = load_data()
-        for user in data:
-            if user['username'] == current_user.username:
-                user_data = user
-                break
+        user_data = load_data_special_by_username(current_user.username)
 
         if profile_image:
             profile_image_path = path.join(app.root_path, "static/images/profiles", profile_image.filename)
@@ -254,7 +244,7 @@ def update_profile_image():
             user_data['username'] = new_username
             print('Username updated successfully.')
         
-        if new_email:
+        if new_email and current_user.email == user_data['email']:
             user_data['email'] = new_email
             print('Email updated successfully.')
 
@@ -268,9 +258,10 @@ def update_profile_image():
             else:
                 print("Current password is incorrect", "danger")
 
-        for user in data:
+        data = load_data()
+        for i, user in enumerate(data):
             if user['username'] == current_user.username:
-                user = user_data
+                data[i] = user_data
                 break
 
         save_data(data)
